@@ -154,3 +154,18 @@ present(nav, animated: true)
 - iOS 16.0+
 - Swift 5.9+
 - No third-party dependencies
+
+---
+
+## Remote QA Monitoring (preview)
+
+The SDK now ships with an optional **remote** mode in addition to the local
+debug panel. When enabled, captured API calls also stream live to a Node
+backend and render in a React dashboard alongside an AI-assisted per-session
+report (Issue Summary, Possible Root Cause, Failed / Slow APIs, Suggested
+Jira ticket, Severity). The transport is opt-in (off by default), purely
+additive, and the existing local pipeline is unchanged.
+
+See [`REMOTE_MONITORING.md`](REMOTE_MONITORING.md) for a one-page quickstart
+and [`docs/`](docs/) for full architecture, migration, testing, security,
+and roadmap documentation.
