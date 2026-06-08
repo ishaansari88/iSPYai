@@ -33,3 +33,27 @@ Podfile.lock
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+
+# Node / JS workspaces (backend + dashboard + shared)
+node_modules/
+dist/
+build/
+.next/
+coverage/
+.cache/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/
+.idea/

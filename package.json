@@ -1,0 +1,28 @@
+{
+  "name": "ispyai-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Workspaces root for the iSpyAI remote-monitoring backend, dashboard, and shared types.",
+  "workspaces": [
+    "shared",
+    "backend",
+    "dashboard"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n backend,dashboard -c blue,magenta \"npm:dev -w @ispyai/backend\" \"npm:dev -w @ispyai/dashboard\"",
+    "dev:backend": "npm run dev -w @ispyai/backend",
+    "dev:dashboard": "npm run dev -w @ispyai/dashboard",
+    "build": "npm run build -w @ispyai/shared && npm run build -w @ispyai/backend && npm run build -w @ispyai/dashboard",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "tsx": "^4.11.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -44,6 +44,30 @@ final class LogManager {
         DispatchQueue.main.async { [weak self] in
             self?.onNewLog?(masked)
         }
+
+        // Additive remote dispatch (MODE 2). Behind a runtime flag so the
+        // existing local pipeline behaves identically when remote monitoring
+        // is off. The transport stamps session/device/app/build metadata,
+        // truncates bodies, masks headers, and never throws.
+        if IspyAIConfig.shared.remoteMonitoringEnabled {
+            let cfg = IspyAIConfig.shared
+            let stampedLog = APILog(
+                id:              masked.id,
+                endpoint:        masked.endpoint,
+                method:          masked.method,
+                requestHeaders:  masked.requestHeaders,
+                responseHeaders: masked.responseHeaders,
+                statusCode:      masked.statusCode,
+                responseBody:    masked.responseBody,
+                responseTime:    masked.responseTime,
+                timestamp:       masked.timestamp,
+                sessionId:       cfg.sessionId,
+                deviceName:      cfg.deviceName,
+                appVersion:      cfg.appVersion,
+                buildNumber:     cfg.buildNumber
+            )
+            Task { await RemoteLogTransport.shared.send(stampedLog) }
+        }
         #endif
     }
 

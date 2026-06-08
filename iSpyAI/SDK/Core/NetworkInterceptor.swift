@@ -20,6 +20,15 @@ final class NetworkInterceptor: URLProtocol {
 
     /// Only intercept requests that haven't already been tagged by this interceptor.
     override class func canInit(with request: URLRequest) -> Bool {
+        #if ISPYAI_ENABLED
+        // Skip traffic to the iSpyAI backend itself so we don't recursively
+        // instrument the transport's own delivery requests.
+        if let selfHost = IspyAIConfig.shared.backendURL?.host,
+           let requestHost = request.url?.host,
+           selfHost.caseInsensitiveCompare(requestHost) == .orderedSame {
+            return false
+        }
+        #endif
         return URLProtocol.property(forKey: handledKey, in: request) == nil
     }
 
